@@ -1,0 +1,66 @@
+{
+    "template_booksearch" : {
+        "template" : "*book*",
+		"settings" : {
+			"number_of_shards" : 5,
+			"number_of_replicas" : 1,
+			"index": {
+				"analysis" : {
+					"analyzer" : {
+						"basic_analyzer" : {
+							"tokenizer" : "standard",
+							"filter" : ["standard", "lowercase", "basic_stemmer"]
+						},
+						"multivalue_analyzer" : {
+							"type": "pattern",
+							"pattern":",",
+							"lowercase": false
+						}
+					},
+					"filter" : {
+						"basic_stemmer" : {
+							"type" : "stemmer",
+							"name" : "english"
+						}
+					}
+				}
+			}
+		},
+		"mappings" : {
+			"doc" : {
+				"properties" : {
+					"url" : {
+						"type" : "string", 
+						"index" : "not_analyzed"
+					},
+					"title" : {
+						"type" : "string", 
+						"analyzer": "basic_analyzer"
+					},
+					"content" : {
+						"type": "string", 
+						"analyzer": "basic_analyzer"
+					},
+					"date" : {
+						"type": "date",
+						"format" : "dateOptionalTime"
+					},
+					"author" : {
+						"type": "string", 
+						"index_analyzer": "multivalue_analyzer"
+					},
+					"tstamp" : {
+						"type" : "date",
+						"format" : "dateOptionalTime"
+					},
+					"type" : { 
+						"type" : "string"
+					},
+					"digest" : {
+						"type" : "string"
+					}
+				}
+			}
+		}
+    }
+}

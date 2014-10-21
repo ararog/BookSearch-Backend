@@ -1,0 +1,74 @@
+curl -XDELETE 'http://localhost:9200/booksearch/' && echo
+
+curl -XPUT 'http://localhost:9200/booksearch/' -d '{
+    "settings" : {
+        "number_of_shards" : 5,
+        "number_of_replicas" : 1
+    }
+}' && echo
+
+
+curl -XPOST localhost:9200/booksearch/_close && echo
+
+curl -XPUT localhost:9200/booksearch/_settings -d '{
+  "index": {
+      "analysis" : {
+          "analyzer" : {
+              "basic_analyzer" : {
+                  "tokenizer" : "standard",
+                  "filter" : ["standard", "lowercase", "basic_stemmer"]
+              },
+              "multivalue_analyzer" : {
+                  "type": "pattern",
+                  "pattern":",",
+                  "lowercase": false
+              }
+          },
+          "filter" : {
+              "basic_stemmer" : {
+                  "type" : "stemmer",
+                  "name" : "english"
+              }
+          }
+      }
+   }
+}' && echo
+
+curl -XPOST localhost:9200/booksearch/_open && echo
+
+curl -XPUT 'http://localhost:9200/booksearch/doc/_mapping?ignore_conflicts=true' -d '{
+    "doc" : {
+        "properties" : {
+            "url" : {
+                "type" : "string", 
+                "index" : "not_analyzed"
+            },
+            "title" : {
+                 "type" : "string", 
+                 "analyzer": "basic_analyzer"
+            },
+            "content" : {
+                 "type": "string", 
+                 "analyzer": "basic_analyzer"
+            },
+            "date" : {
+                 "type": "date",
+                 "format" : "dateOptionalTime"
+            },
+            "author" : {
+                 "type": "string", 
+                 "analyzer": "multivalue_analyzer"
+            },
+            "tstamp" : {
+                 "type" : "date",
+                 "format" : "dateOptionalTime"
+            },
+            "type" : { 
+                 "type" : "string"
+            },
+            "digest" : {
+                 "type" : "string"
+            }
+        }
+    }
+}' && echo

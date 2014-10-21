@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+<property>
+  <name>http.agent.name</name>
+  <value>Crawler</value>
+  <description>HTTP 'User-Agent' request header. MUST NOT be empty - 
+  please set this to a single word uniquely related to your organization.
+
+  NOTE: You should also check other related properties:
+
+	http.robots.agents
+	http.agent.description
+	http.agent.url
+	http.agent.email
+	http.agent.version
+
+  and set their values appropriately.
+
+  </description>
+</property>
+
+<property>
+  <name>file.content.limit</name>
+  <value>20971520</value>
+  <description>The length limit for downloaded content using the file
+   protocol, in bytes. If this value is nonnegative (>=0), content longer
+   than it will be truncated; otherwise, no truncation at all. Do not
+   confuse this setting with the http.content.limit setting.
+  </description>
+</property>
+
+<property>
+  <name>plugin.includes</name>
+ <value>protocol-file|protocol-http|urlfilter-regex|parse-(html|tika)|index-(basic|anchor|metadata|more)|indexer-elastic|urlnormalizer-(pass|regex|basic)|scoring-opic</value>
+ <description>Regular expression naming plugin directory names to
+  include.  Any plugin not matching this expression is excluded.
+  In any case you need at least include the nutch-extensionpoints plugin. By
+  default Nutch includes crawling just HTML and plain text via HTTP,
+  and basic indexing and search plugins. In order to use HTTPS please enable 
+  protocol-httpclient, but be aware of possible intermittent problems with the 
+  underlying commons-httpclient library.
+  </description>
+</property>
+
+<property>
+  <name>elastic.host</name>
+  <value>localhost</value>
+  <description>The hostname to send documents to using TransportClient.
+  Either host and port must be defined or cluster.
+  </description>
+</property>
+
+<property>
+  <name>elastic.cluster</name>
+  <value>bmobile</value>
+  <description>The cluster name to discover. Either host and potr must
+  be defined or cluster.
+  </description>
+</property>
+
+<property>
+  <name>elastic.index</name>
+  <value>booksearch</value>
+  <description>
+  The name of the elasticsearch index. Will normally be autocreated if it
+  doesn't exist.
+  </description>
+</property>
+
+<property>
+  <name>storage.data.store.class</name>
+  <value>org.apache.gora.cassandra.store.CassandraStore</value>
+  <description>The Gora DataStore class for storing and retrieving data.
+   Currently the following stores are available:
+  
+  org.apache.gora.sql.store.SqlStore 
+    Default store. A DataStore implementation for RDBMS with a SQL interface.
+    SqlStore uses JDBC drivers to communicate with the DB. As explained in 
+    ivy.xml, currently >= gora-core 0.3 is not backwards compatable with 
+    SqlStore.
+  
+  org.apache.gora.cassandra.store.CassandraStore
+    Gora class for storing data in Apache Cassandra.
+  
+  org.apache.gora.hbase.store.HBaseStore
+    Gora class for storing data in Apache HBase.
+  
+  org.apache.gora.accumulo.store.AccumuloStore
+    Gora class for storing data in Apache Accumulo.
+  
+  org.apache.gora.avro.store.AvroStore
+    Gora class for storing data in Apache Avro.
+    
+  org.apache.gora.avro.store.DataFileAvroStore
+    Gora class for storing data in Apache Avro. DataFileAvroStore is 
+    a file based store which uses Avro's DataFile{Writer,Reader}'s as a backend.
+    This datastore supports mapreduce.
+    
+  org.apache.gora.memory.store.MemStore
+    Gora class for storing data in a Memory based implementation for tests.
+  </description>
+</property>
+
+</configuration>
