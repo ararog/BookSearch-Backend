@@ -1,7 +1,7 @@
 BookSearch-Backend
 ==================
 
-This is the backend configuration of BookSearch project found at https://github.com/ararog/BookSearch
+This is the backend configuration of book search frontend project found at https://github.com/ararog/BookSearch-Frontend
 
 The configuration backend is divided into two components, the search engine and the crawler.
 
